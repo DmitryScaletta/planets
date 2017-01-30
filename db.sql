@@ -105,6 +105,9 @@ ORDER BY sum_of_core_temperatures DESC
 
 
 
+
+BEGIN TRANSACTION;
+
 -- планета
 CREATE TABLE IF NOT EXISTS Planet
 (
@@ -134,9 +137,6 @@ CREATE TABLE IF NOT EXISTS Galaxy
     name                TEXT        -- название
 );
 
-
-
-BEGIN TRANSACTION;
 
 INSERT INTO Satellite (id,planet_id,name,radius,distance) VALUES
 (1,  1,  'Deimos',      14532, 345200),
