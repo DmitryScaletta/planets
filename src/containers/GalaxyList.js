@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect }          from 'react-redux'
-import { Link }             from 'react-router'
 import * as actions         from '../actions/GalaxyList'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
+import GalaxyTable          from '../components/GalaxyTable'
 
 class GalaxyList extends Component {
 	
@@ -21,26 +21,7 @@ class GalaxyList extends Component {
 		return (
 			<div>
 				<h2>Galaxies</h2>
-				<table className="table">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Planets count</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ !galaxies ? null : galaxies.map((galaxy) => (
-							<tr key={galaxy.id}>
-								<td>{galaxy.id}</td>
-								<td>
-									<Link to={`galaxy/${galaxy.id}`}>{galaxy.name}</Link>
-								</td>
-								<td>{galaxy.planets_count}</td>
-							</tr>
-						)) }
-					</tbody>
-				</table>
+				<GalaxyTable galaxies={galaxies} />
 			</div>
 		)
 	}
