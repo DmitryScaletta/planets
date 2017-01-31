@@ -1,5 +1,4 @@
 import {
-	getGalaxies,
 	getPlanetsWithLifeByGalaxy,
 	getPlanetsWithMinRadiusAndMaxSatellitesCount,
 	getPlanetWithMaxSatellitesAndMinSatellitesVolume,
@@ -18,7 +17,7 @@ export function fetchCustomQuery(queryName, galaxyId = null) {
 
 		switch (queryName) {
 			case 'planets-with-life':
-				promise = getPlanetsWithLifeByGalaxy(Number(galaxyId))
+				promise = (galaxyId === null) ? Promise.resolve([]) : getPlanetsWithLifeByGalaxy(Number(galaxyId))
 				break
 			case 'planets-with-min-radius-and-max-satelites-count':
 				promise = getPlanetsWithMinRadiusAndMaxSatellitesCount()

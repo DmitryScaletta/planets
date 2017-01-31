@@ -6,7 +6,6 @@ import { fetchGalaxies }    from '../actions/GalaxyList'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
 import SatelliteTable       from '../components/SatelliteTable'
-import GalaxyTable          from '../components/GalaxyTable'
 import GalaxyShow           from '../components/GalaxyShow'
 import PlanetShow           from '../components/PlanetShow'
 
@@ -19,6 +18,16 @@ class Galaxy extends Component {
 		this.handleChange = this.handleChange.bind(this)
 	}
 
+	componentDidMount() {
+		this.fetchData()
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.params.queryName !== prevProps.params.queryName) {
+			this.fetchData()
+		}
+	}
+
 	handleChange(event) {
 		const galaxyId = Number(event.target.value)
 		this.setState({ galaxyId })
@@ -28,9 +37,8 @@ class Galaxy extends Component {
 	fetchData() {
 		switch (this.props.params.queryName) {
 			case 'planets-with-life':
-				if (!this.props.galaxies.length) this.props.fetchGalaxies()
-				break
-			case 'planets-with-min-radius-and-max-satelites-count':
+				if (!this.props.galaxies.length) this.props.fetchGalaxies() 
+			case 'planets-with-min-radius-and-max-satelites-count': // eslint-disable-line
 			case 'planets-with-max-satelites-count-and-min-satellites-volume':
 			case 'galaxies-with-max-sum-of-core-temperatures':
 				this.props.fetchCustomQuery(this.props.params.queryName)
@@ -38,14 +46,18 @@ class Galaxy extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.fetchData()
-	}
-
-	componentDidUpdate(prevProps) {
-		if (this.props.params.queryName !== prevProps.params.queryName) {
-			this.fetchData()
-		}
+	renderPlanets(data) {
+		return (
+			<div>
+				{ data.map((planet) => (
+				<div key={planet.id} style={{marginBottom: '50px'}}>
+					<PlanetShow planet={planet} />
+					<h5>Satellites</h5>
+					<SatelliteTable satellites={planet.satellites} />
+				</div>
+				)) }
+			</div>
+		)
 	}
 
 	render() {
@@ -59,7 +71,7 @@ class Galaxy extends Component {
 				return (
 					<div>
 						<div className="form-group">
-							<label htmlFor="galaxy">Select galaxy</label>
+							<label htmlFor="galaxy">Select a galaxy</label>
 							<select className="form-control" id="galaxy" value={this.state.galaxyId} onChange={this.handleChange}>
 								<option value="0"></option>
 								{ galaxies.map((galaxy) => (
@@ -67,28 +79,12 @@ class Galaxy extends Component {
 								)) }
 							</select>
 						</div>
-						{ (!data.length && this.state.galaxyId) ? <span>There is no life in this galaxy</span> : data.map((planet) => (
-							<div key={planet.id} style={{marginBottom: '50px'}}>
-								<PlanetShow planet={planet} />
-								<h5>Satellites</h5>
-								<SatelliteTable satellites={planet.satellites} />
-							</div>
-						)) }
+						{ (!data.length && this.state.galaxyId) ? <span>There is no life in this galaxy</span> : this.renderPlanets(data) }
 					</div>
 				)
 			case 'planets-with-min-radius-and-max-satelites-count':
 			case 'planets-with-max-satelites-count-and-min-satellites-volume':
-				return (
-					<div>
-						{ data.map((planet) => (
-							<div key={planet.id} style={{marginBottom: '50px'}}>
-								<PlanetShow planet={planet} />
-								<h5>Satellites</h5>
-								<SatelliteTable satellites={planet.satellites} />
-							</div>
-						)) }
-					</div>
-				)
+				return this.renderPlanets(data)
 			case 'galaxies-with-max-sum-of-core-temperatures':
 				return (
 					<div>
