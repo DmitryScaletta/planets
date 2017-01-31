@@ -189,18 +189,7 @@ const galaxies = [
 	{ id: 17, name: 'Whirlpool Galaxy' },
 ]
 
-
-export function addPlanet({ galaxy_id, name, radius, core_temperature, atmosphere, life }) {
-	return true
-}
-
-export function addSatellite({ planet_id, name, radius, distance }) {
-	return true
-}
-
-export function addGalaxy({ name }) {
-	return true
-}
+const TIMEOUT = 500
 
 function addPlanetsSatellites(planets) {
 	return planets.map((planet) => {
@@ -223,10 +212,27 @@ function getGalaxyNameById(galaxyId) {
 	return ''
 }
 
+function getPlanetNameById(planetId) {
+	for (const planet of planets) {
+		if (planet.id === planetId) {
+			return planet.name
+		}
+	}
+	return ''
+}
+
 function getSatellitesCount(planetId) {
 	let count = 0
 	satellites.forEach((satellite) => {
 		if (satellite.planet_id === planetId) ++count
+	})
+	return count
+}
+
+function getPlanetsCount(galaxyId) {
+	let count = 0
+	planets.forEach((planet) => {
+		if (planet.galaxy_id === galaxyId) ++count
 	})
 	return count
 }
@@ -241,55 +247,145 @@ function getSatellitesVolume(planetId) {
 	return volume
 }
 
+export function getGalaxies() {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		resolve(
+			galaxies.map((galaxy) => {
+				galaxy.planets_count = getPlanetsCount(galaxy.id)
+				return galaxy
+			})
+		) 
+	}, TIMEOUT)	})
+}
+
+export function getPlanets() {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		resolve(
+			planets.map((planet) => {
+				planet.galaxy_name = getGalaxyNameById(planet.galaxy_id)
+				return planet
+			})
+		)
+	}, TIMEOUT)	})
+}
+
+export function getSatellites() {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		resolve(
+			satellites.map((satellite) => {
+				satellite.planet_name = getPlanetNameById(satellite.planet_id)
+				return satellite
+			})
+		)
+	}, TIMEOUT)	})
+}
+
+export function getGalaxy(galaxyId) {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const _galaxyId = Number(galaxyId)
+		if (isNaN(galaxyId)) {
+			reject('galaxyId is not a number')
+			return
+		}
+		for (const galaxy of galaxies) {
+			if (galaxy.id === _galaxyId) {
+				resolve(galaxy)
+				return
+			}
+		}
+		reject('Not found galaxy with id: ' + galaxyId)
+	}, TIMEOUT)	})
+}
+
+export function getPlanet(planetId) {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const _planetId = Number(planetId)
+		if (isNaN(planetId)) {
+			reject('planetId is not a number')
+			return
+		}
+		for (const planet of planets) {
+			if (planet.id === _planetId) {
+				resolve(planet)
+				return
+			}
+		}
+		reject('Not found planet with id: ' + planetId)
+	}, TIMEOUT)	})
+}
+
+export function getSatellite(satelliteId) {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const _satelliteId = Number(satelliteId)
+		if (isNaN(satelliteId)) {
+			reject('satelliteId is not a number')
+			return
+		}
+		for (const satellite of satellites) {
+			if (satellite.id === _satelliteId) {
+				resolve(satellite)
+				return
+			}
+		}
+		reject('Not found satellite with id: ' + satelliteId)
+	}, TIMEOUT)	})
+}
+
 // Вывести информацию обо всех планетах, на которых присутствует жизнь, и их спутниках в заданной галактике
-export function getPlanetsWithLifeByGalaxy(_galaxyId) {
-	let   planetsWithLife = []
-	const galaxyId        = Number(_galaxyId)
-	const galaxyName      = getGalaxyNameById(galaxyId)
+export function getPlanetsWithLifeByGalaxy(galaxyId) {
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		let   planetsWithLife = []
+		const _galaxyId       = Number(galaxyId)
+		const galaxyName      = getGalaxyNameById(_galaxyId)
 
-	for (const planet of planets) {
-		if (planet.galaxy_id !== galaxyId || planet.life !== 1) continue
-		planetsWithLife.push({ ...planet, galaxy_id: galaxyId, galaxy_name: galaxyName })
-	}
+		for (const planet of planets) {
+			if (planet.galaxy_id !== _galaxyId || planet.life !== 1) continue
+			planetsWithLife.push({ ...planet, galaxy_id: _galaxyId, galaxy_name: galaxyName })
+		}
 
-	return addPlanetsSatellites(planetsWithLife)
+		resolve(addPlanetsSatellites(planetsWithLife))
+	}, TIMEOUT)	})
 }
 
 // Вывести информацию о планетах и их спутниках, имеющих наименьший радиус и наибольшее количество спутников
 export function getPlanetsWithMinRadiusAndMaxSatellitesCount() {
-	const newPlanets = planets.map((planet) => {
-		planet.satellites_count = getSatellitesCount(planet.id)
-		return planet
-	})
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const newPlanets = planets.map((planet) => {
+			planet.satellites_count = getSatellitesCount(planet.id)
+			return planet
+		})
 
-	const compare = (a, b) => {
-		if (a.radius           < b.radius)           return -1
-		if (a.radius           > b.radius)           return  1
-		if (a.satellites_count < b.satellites_count) return -1
-		if (a.satellites_count > b.satellites_count) return  1
-		return 0
-	}
+		const compare = (a, b) => {
+			if (a.radius           < b.radius)           return -1
+			if (a.radius           > b.radius)           return  1
+			if (a.satellites_count < b.satellites_count) return -1
+			if (a.satellites_count > b.satellites_count) return  1
+			return 0
+		}
 
-	return addPlanetsSatellites(newPlanets.sort(compare))
+		resolve(addPlanetsSatellites(newPlanets.sort(compare)))
+	}, TIMEOUT)	})
 }
 
 // Вывести информацию о планете, галактике, в которой она находится, и ее спутниках, имеющей максимальное количество спутников, но с наименьшим общим объемом этих спутников
 export function getPlanetWithMaxSatellitesAndMinSatellitesVolume() {
-	const newPlanets = planets.map((planet) => {
-		planet.satellites_count  = getSatellitesCount (planet.id)
-		planet.satellites_volume = getSatellitesVolume(planet.id)
-		return planet
-	})
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const newPlanets = planets.map((planet) => {
+			planet.satellites_count  = getSatellitesCount (planet.id)
+			planet.satellites_volume = getSatellitesVolume(planet.id)
+			return planet
+		})
 
-	const compare = (a, b) => {
-		if (a.satellites_count  > b.satellites_count)  return -1
-		if (a.satellites_count  < b.satellites_count)  return  1
-		if (a.satellites_volume < b.satellites_volume) return -1
-		if (a.satellites_volume > b.satellites_volume) return  1
-		return 0
-	}
+		const compare = (a, b) => {
+			if (a.satellites_count  > b.satellites_count)  return -1
+			if (a.satellites_count  < b.satellites_count)  return  1
+			if (a.satellites_volume < b.satellites_volume) return -1
+			if (a.satellites_volume > b.satellites_volume) return  1
+			return 0
+		}
 
-	return addPlanetsSatellites(newPlanets.sort(compare))
+		resolve(addPlanetsSatellites(newPlanets.sort(compare)))
+	}, TIMEOUT)	})
 }
 
 // Найти галактику, сумма ядерных температур планет которой наибольшая
@@ -303,16 +399,18 @@ export function getGalaxyWithMaxSumOfCoreTemperatures() {
 		return sum
 	}
 
-	const newGalaxies = galaxies.map((galaxy) => {
-		galaxy.sum_of_core_temperatures = getSumOfCoreTemperatures(galaxy.id)
-		return galaxy
-	})
+	return new Promise((resolve, reject) => { setTimeout(() => {
+		const newGalaxies = galaxies.map((galaxy) => {
+			galaxy.sum_of_core_temperatures = getSumOfCoreTemperatures(galaxy.id)
+			return galaxy
+		})
 
-	const compare = (a, b) => {
-		if (a.sum_of_core_temperatures > b.sum_of_core_temperatures) return -1
-		if (a.sum_of_core_temperatures < b.sum_of_core_temperatures) return  1
-		return 0
-	}
+		const compare = (a, b) => {
+			if (a.sum_of_core_temperatures > b.sum_of_core_temperatures) return -1
+			if (a.sum_of_core_temperatures < b.sum_of_core_temperatures) return  1
+			return 0
+		}
 
-	return newGalaxies.sort(compare)
+		resolve(newGalaxies.sort(compare))
+	}, TIMEOUT)	})
 }
