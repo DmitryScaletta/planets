@@ -41,11 +41,9 @@ module.exports = createConfig([
 	}),
 	env('development', [
 		entryPoint('./src/index.dev.js'),
-		() => ({
-			devServer: {
-				contentBase: ['dist']
-			}
-		}),
+		() => ({ devServer: {
+			contentBase: ['dist']
+		}}),
 		devServer(),
 		/*devServer.proxy({
 			'/api/*': { target: 'http://localhost:8080' }
