@@ -1,34 +1,59 @@
 import React, { Component } from 'react'
+import { Link }             from 'react-router'
 
-
-export default class Main extends Component {
+class Main extends Component {
 	render() {
 		return (
 			<div>
 				<nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-					<button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-						<span className="navbar-toggler-icon"></span>
-					</button>
-					<a className="navbar-brand" href="#">Navbar</a>
+					<div className="container">
+						<button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+							<span className="navbar-toggler-icon"></span>
+						</button>
+						<a className="navbar-brand" href="#">Planets</a>
 
-					<div className="collapse navbar-collapse" id="navbarSupportedContent">
-						<ul className="navbar-nav mr-auto">
-							<li className="nav-item active">
-								<a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="#">Link</a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link disabled" href="#">Disabled</a>
-							</li>
-						</ul>
+						<div className="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul className="navbar-nav mr-auto">
+								<li className="nav-item active">
+									<Link className="nav-link" to="galaxies">Galaxies</Link>
+								</li>
+								<li className="nav-item">
+									<Link className="nav-link" to="planets">Planets</Link>
+								</li>
+								<li className="nav-item">
+									<Link className="nav-link" to="satellites">Satellites</Link>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</nav>
-				{this.props.children}
+				<div className="container" style={{margin: '20px auto'}}>
+					<div className="row">
+						<div className="col-xs-12 col-md-12 col-lg-3 col-xl-3">
+							<div className="list-group">
+								<Link className="list-group-item list-group-item-action" to="/">Main</Link>
+								<Link className="list-group-item active" to="galaxies">Galaxies</Link>
+								<Link className="list-group-item list-group-item-action" to="planets">Planets</Link>
+								<Link className="list-group-item list-group-item-action" to="satellites">Satellites</Link>
+								<a href="#" className="list-group-item list-group-item-action disabled"></a>
+								<a href="#" className="list-group-item list-group-item-action">Planets with life</a>
+								<a href="#" className="list-group-item list-group-item-action">Planets with min radius</a>
+								<a href="#" className="list-group-item list-group-item-action">Planets with max satellites count</a>
+								<a href="#" className="list-group-item list-group-item-action">Galaxies with max sum of core temperatures</a>
+							</div>
+						</div>
+						<div className="col-xs-12 col-md-12 col-lg-9 col-xs-9">
+							{this.props.children}
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}
 }
 
-	
+Main.propTypes = {
+	children: React.PropTypes.node,
+}
+
+export default Main
