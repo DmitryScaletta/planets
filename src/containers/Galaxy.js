@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect }          from 'react-redux'
+import { Link }             from 'react-router'
 import * as actions         from '../actions/Galaxy'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
@@ -26,6 +27,9 @@ class Galaxy extends Component {
 
 		return (
 			<div>
+				<ol className="breadcrumb">
+					<li className="breadcrumb-item"><Link to="galaxies">← Back to galaxies list</Link></li>
+				</ol>
 				<GalaxyShow galaxy={galaxy} />
 				<h5>Planets</h5>
 				<PlanetTable planets={planets} />

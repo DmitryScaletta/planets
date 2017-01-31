@@ -3,7 +3,33 @@ import { Link }             from 'react-router'
 
 class Main extends Component {
 	render() {
-		const isActive = (s) => this.props.location.pathname.indexOf(s) === 0
+		const isActive = (s) => (this.props.location.pathname.indexOf(s) === 0) || (this.props.location.pathname.indexOf(s) === 1)
+
+		const mainMenu = [
+			{	title: 'Galaxies',		url: 'galaxies',	active: isActive('/galax') },
+			{	title: 'Planets',		url: 'planets',		active: isActive('/planet') },
+			{	title: 'Satellites',	url: 'satellites',	active: isActive('/satellite') },
+		]
+
+		const leftMenu = [
+			{	title: 'Galaxies', 		url: 'galaxies',	},
+			{	title: 'Planets', 		url: 'planets',		},
+			{	title: 'Satellites', 	url: 'satellites',	},
+			{	title: '',				url: '',			disabled: true },
+			{	title:  'Planets with life',
+				url:    'custom-query/planets-with-life',
+			},
+			{	title:  'Planets with min radius and max satellites count',
+				url:    'custom-query/planets-with-min-radius-and-max-satelites-count',
+			},
+			{	title:  'Planets with max satellites count and min satellites volume',
+				url:    'custom-query/planets-with-max-satelites-count-and-min-satellites-volume',
+			},
+			{	title:  'Galaxies with max sum of core temperatures',
+				url:    'custom-query/galaxies-with-max-sum-of-core-temperatures',
+			},
+		]
+
 		return (
 			<div>
 				<nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse">
@@ -15,15 +41,16 @@ class Main extends Component {
 
 						<div className="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul className="navbar-nav mr-auto">
-								<li className={isActive('/galax') ? 'nav-item active' : 'nav-item'}>
-									<Link className="nav-link" to="galaxies">Galaxies</Link>
-								</li>
-								<li className={isActive('/planet') ? 'nav-item active' : 'nav-item'}>
-									<Link className="nav-link" to="planets">Planets</Link>
-								</li>
-								<li className={isActive('/satellite') ? 'nav-item active' : 'nav-item'}>
-									<Link className="nav-link" to="satellites">Satellites</Link>
-								</li>
+								{ mainMenu.map((item, key) => (
+									<li key={key} className={item.active ? 'nav-item active' : 'nav-item'}>
+										<Link 
+											className="nav-link"
+											to={item.active ? '' : item.url}
+										>
+											{item.title}
+										</Link>
+									</li>
+								)) }
 							</ul>
 						</div>
 					</div>
@@ -32,36 +59,16 @@ class Main extends Component {
 					<div className="row">
 						<div className="col-xs-12 col-md-12 col-lg-3 col-xl-3">
 							<div className="list-group">
-								<Link className='list-group-item list-group-item-action' to="/">Main</Link>
-								<Link className={isActive('/galax')     ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="galaxies">Galaxies</Link>
-								<Link className={isActive('/planet')    ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="planets">Planets</Link>
-								<Link className={isActive('/satellite') ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="satellites">Satellites</Link>
-								<a className="list-group-item list-group-item-action disabled"></a>
-
-								<Link 
-									className="list-group-item list-group-item-action" 
-									to="custom-query/planets-with-life"
-								>
-									Planets with life
-								</Link>
-								<Link 
-									className="list-group-item list-group-item-action" 
-									to="custom-query/planets-with-min-radius-and-max-satelites-count"
+								{ leftMenu.map((item, key) => (
+									<Link
+										key={key}
+										className={item.disabled ? 'list-group-item list-group-item-action disabled' : 'list-group-item list-group-item-action'}
+										activeClassName={'list-group-item active'}
+										to={item.url}
 									>
-									Planets with min radius and max satellites count
-								</Link>
-								<Link 
-									className="list-group-item list-group-item-action" 
-									to="custom-query/planets-with-max-satelites-count-and-min-satellites-volume"
-									>
-									Planets with max satellites count and min satellites volume
-								</Link>
-								<Link 
-									className="list-group-item list-group-item-action" 
-									to="custom-query/galaxies-with-max-sum-of-core-temperatures"
-									>
-									Galaxies with max sum of core temperatures
-								</Link>
+										{item.title}
+									</Link>
+								)) }
 							</div>
 						</div>
 						<div className="col-xs-12 col-md-12 col-lg-9 col-xs-9">

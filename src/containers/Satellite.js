@@ -4,6 +4,7 @@ import { Link }             from 'react-router'
 import * as actions         from '../actions/Satellite'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
+import SatelliteShow        from '../components/SatelliteShow'
 
 class Satellite extends Component {
 	
@@ -25,29 +26,10 @@ class Satellite extends Component {
 
 		return (
 			<div>
-				<h2>Satellite</h2>
-				<table className="table">
-					<tbody>
-						<tr>
-							<th>Name</th>
-							<td>{satellite.name}</td>
-						</tr>
-						<tr>
-							<th>Planet</th>
-							<td>
-								<Link to={`planet/${satellite.planet_id}`}>{satellite.planet_name}</Link>
-							</td>
-						</tr>
-						<tr>
-							<th>Radius</th>
-							<td>{satellite.radius}</td>
-						</tr>
-						<tr>
-							<th>Distance</th>
-							<td>{satellite.distance}</td>
-						</tr>
-					</tbody>
-				</table>
+				<ol className="breadcrumb">
+					<li className="breadcrumb-item"><Link to="satellites">← Back to satellites list</Link></li>
+				</ol>
+				<SatelliteShow satellite={satellite} />
 			</div>
 		)
 	}

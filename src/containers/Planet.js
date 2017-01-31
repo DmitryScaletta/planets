@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect }          from 'react-redux'
+import { Link }             from 'react-router'
 import * as actions         from '../actions/Planet'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
@@ -26,6 +27,9 @@ class Planet extends Component {
 
 		return (
 			<div>
+				<ol className="breadcrumb">
+					<li className="breadcrumb-item"><Link to="planets">← Back to planets list</Link></li>
+				</ol>
 				<PlanetShow planet={planet} />
 				<h5>Satellites</h5>
 				<SatelliteTable satellites={satellites} />

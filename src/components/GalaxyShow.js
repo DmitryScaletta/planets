@@ -9,7 +9,7 @@ const GalaxyShow = ({ galaxy }) => {
 			<table className="table">
 				<tbody>
 					<tr>
-						<th>Planets count</th>
+						<th width="50%">Planets count</th>
 						<td>{galaxy.planets_count}</td>
 					</tr>
 					{ (galaxy.sum_of_core_temperatures === undefined) ? null : <tr>

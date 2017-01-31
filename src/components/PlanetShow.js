@@ -9,7 +9,7 @@ const PlanetShow = ({ planet }) => {
 			<table className="table">
 				<tbody>
 					<tr>
-						<th>Galaxy</th>
+						<th width="50%">Galaxy</th>
 						<td>
 							<Link to={`galaxy/${planet.galaxy_id}`}>{planet.galaxy_name}</Link>
 						</td>
