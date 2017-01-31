@@ -4,6 +4,8 @@ import planets             from './PlanetList'
 import galaxies            from './GalaxyList'
 import satellites          from './SatelliteList'
 import galaxy              from './Galaxy'
+import planet              from './Planet'
+import satellite           from './Satellite'
 
 const rootReducer = combineReducers({
 	common,
@@ -11,6 +13,8 @@ const rootReducer = combineReducers({
 	galaxies,
 	satellites,
 	galaxy,
+	planet,
+	satellite,
 })
 
 export default rootReducer

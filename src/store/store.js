@@ -4,14 +4,17 @@ const initialState = {
 		error:    '',
 	},
 	galaxies:   [],
-	galaxy:     {
-		galaxy:  {},
+	planets:    [],
+	satellites: [],
+	galaxy: {
+		galaxy: {},
 		planets: []
 	},
-	planets:    [],
-	planet:     {},
-	satellites: [],
-	satellite:  {},
+	planet: {
+		planet: {},
+		satellites: [],
+	},
+	satellite: {},
 }
 
 export default initialState

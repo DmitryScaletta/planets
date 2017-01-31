@@ -324,7 +324,7 @@ export function getPlanet(planetId) {
 		}
 		for (const planet of planets) {
 			if (planet.id === _planetId) {
-				resolve(planet)
+				resolve({ ...planet, galaxy_name: getGalaxyNameById(planet.galaxy_id) })
 				return
 			}
 		}
@@ -341,7 +341,7 @@ export function getSatellite(satelliteId) {
 		}
 		for (const satellite of satellites) {
 			if (satellite.id === _satelliteId) {
-				resolve(satellite)
+				resolve({ ...satellite, planet_name: getPlanetNameById(satellite.planet_id) })
 				return
 			}
 		}

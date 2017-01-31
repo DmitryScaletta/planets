@@ -36,7 +36,7 @@ class Main extends Component {
 								<Link className={isActive('/galax')     ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="galaxies">Galaxies</Link>
 								<Link className={isActive('/planet')    ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="planets">Planets</Link>
 								<Link className={isActive('/satellite') ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="satellites">Satellites</Link>
-								<a href="#" className="list-group-item list-group-item-action disabled"></a>
+								<a className="list-group-item list-group-item-action disabled"></a>
 								<a href="#" className="list-group-item list-group-item-action">Planets with life</a>
 								<a href="#" className="list-group-item list-group-item-action">Planets with min radius</a>
 								<a href="#" className="list-group-item list-group-item-action">Planets with max satellites count</a>

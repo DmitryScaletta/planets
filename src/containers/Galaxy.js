@@ -8,7 +8,6 @@ import PlanetTable          from '../components/PlanetTable'
 class Galaxy extends Component {
 	
 	componentDidMount() {
-		console.log(this.props.params)
 		this.props.fetchGalaxy(this.props.params.id)
 	}
 
@@ -39,7 +38,7 @@ class Galaxy extends Component {
 						</tr>
 					</tbody>
 				</table>
-				<h4>Planets</h4>
+				<h5>Planets</h5>
 				<PlanetTable planets={planets} />
 			</div>
 		)

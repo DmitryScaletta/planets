@@ -18,6 +18,16 @@ import {
 	FETCH_GALAXY_SUCCESS, 
 	FETCH_GALAXY_FAILURE,
 } from '../actions/Galaxy'
+import { 
+	FETCH_PLANET_REQUEST, 
+	FETCH_PLANET_SUCCESS, 
+	FETCH_PLANET_FAILURE,
+} from '../actions/Planet'
+import { 
+	FETCH_SATELLITE_REQUEST, 
+	FETCH_SATELLITE_SUCCESS, 
+	FETCH_SATELLITE_FAILURE,
+} from '../actions/Satellite'
 import initialItate from '../store/store'
 
 export default function(state = initialItate.common, action) {
@@ -27,6 +37,8 @@ export default function(state = initialItate.common, action) {
 		case FETCH_PLANETS_REQUEST:
 		case FETCH_SATELLITES_REQUEST:
 		case FETCH_GALAXY_REQUEST:
+		case FETCH_PLANET_REQUEST:
+		case FETCH_SATELLITE_REQUEST:
 			return {
 				...state,
 				error: '',
@@ -36,6 +48,8 @@ export default function(state = initialItate.common, action) {
 		case FETCH_PLANETS_SUCCESS:
 		case FETCH_SATELLITES_SUCCESS:
 		case FETCH_GALAXY_SUCCESS:
+		case FETCH_PLANET_SUCCESS:
+		case FETCH_SATELLITE_SUCCESS:
 			return {
 				...state,
 				fetching: false,
@@ -44,6 +58,8 @@ export default function(state = initialItate.common, action) {
 		case FETCH_PLANETS_FAILURE:
 		case FETCH_SATELLITES_FAILURE:
 		case FETCH_GALAXY_FAILURE:
+		case FETCH_PLANET_FAILURE:
+		case FETCH_SATELLITE_FAILURE:
 			return {
 				...state,
 				error: action.error,
