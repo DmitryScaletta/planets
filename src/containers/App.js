@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Provider }         from 'react-redux'
-import { hashHistory, Router, Route, /*IndexRoute*/ } from 'react-router'
+import { hashHistory, Router, Route, IndexRoute } from 'react-router'
 import configureStore       from '../store/configureStore'
+import Home                 from '../components/Home'
 import Main                 from './Main'
 import PlanetList           from './PlanetList'
 import Planet               from '../components/Planet'
@@ -26,7 +27,7 @@ export default class App extends Component {
 			<Provider store={store}>
 				<Router history={hashHistory}>
 					<Route path='/' component={Main}>
-						{/*<IndexRoute component={Home} />*/}
+						<IndexRoute component={Home} />
 						<Route path='planets' component={PlanetList} />
 						<Route path='planet/:id' component={Planet} />
 						<Route path='galaxies' component={GalaxyList} />
