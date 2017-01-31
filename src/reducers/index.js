@@ -6,6 +6,7 @@ import satellites          from './SatelliteList'
 import galaxy              from './Galaxy'
 import planet              from './Planet'
 import satellite           from './Satellite'
+import customQuery         from './CustomQuery'
 
 const rootReducer = combineReducers({
 	common,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
 	galaxy,
 	planet,
 	satellite,
+	customQuery,
 })
 
 export default rootReducer

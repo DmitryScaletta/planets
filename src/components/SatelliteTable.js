@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 const SatelliteTable = ({ satellites = [] }) => {
 	
-	if (!satellites) return <div>No satellites</div>
+	if (!satellites.length) return <div>No satellites</div>
 	
 	return (
 		<table className="table">

@@ -10,6 +10,7 @@ import Galaxy               from './Galaxy'
 import GalaxyList           from './GalaxyList'
 import Satellite            from './Satellite'
 import SatelliteList        from './SatelliteList'
+import CustomQuery          from './CustomQuery'
 
 const store = configureStore()
 
@@ -26,6 +27,7 @@ export default class App extends Component {
 						<Route path='galaxy/:id' component={Galaxy} />
 						<Route path='satellites' component={SatelliteList} />
 						<Route path='satellite/:id' component={Satellite} />
+						<Route path='custom-query/:queryName' component={CustomQuery} />
 					</Route>
 				</Router>
 			</Provider>

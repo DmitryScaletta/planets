@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 const GalaxyTable = ({ galaxies = [] }) => {
 	
-	if (!galaxies) return <div>No galaxies</div>
+	if (!galaxies.length) return <div>No galaxies</div>
 	
 	return (
 		<table className="table">

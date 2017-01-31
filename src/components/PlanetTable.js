@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 const PlanetTable = ({ planets = [] }) => {
 	
-	if (!planets) return <div>No planets</div>
+	if (!planets.length) return <div>No planets</div>
 	
 	return (
 		<table className="table">

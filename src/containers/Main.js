@@ -37,10 +37,31 @@ class Main extends Component {
 								<Link className={isActive('/planet')    ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="planets">Planets</Link>
 								<Link className={isActive('/satellite') ? 'list-group-item active' : 'list-group-item list-group-item-action'} to="satellites">Satellites</Link>
 								<a className="list-group-item list-group-item-action disabled"></a>
-								<a href="#" className="list-group-item list-group-item-action">Planets with life</a>
-								<a href="#" className="list-group-item list-group-item-action">Planets with min radius</a>
-								<a href="#" className="list-group-item list-group-item-action">Planets with max satellites count</a>
-								<a href="#" className="list-group-item list-group-item-action">Galaxies with max sum of core temperatures</a>
+
+								<Link 
+									className="list-group-item list-group-item-action" 
+									to="custom-query/planets-with-life"
+								>
+									Planets with life
+								</Link>
+								<Link 
+									className="list-group-item list-group-item-action" 
+									to="custom-query/planets-with-min-radius-and-max-satelites-count"
+									>
+									Planets with min radius and max satellites count
+								</Link>
+								<Link 
+									className="list-group-item list-group-item-action" 
+									to="custom-query/planets-with-max-satelites-count-and-min-satellites-volume"
+									>
+									Planets with max satellites count and min satellites volume
+								</Link>
+								<Link 
+									className="list-group-item list-group-item-action" 
+									to="custom-query/galaxies-with-max-sum-of-core-temperatures"
+									>
+									Galaxies with max sum of core temperatures
+								</Link>
 							</div>
 						</div>
 						<div className="col-xs-12 col-md-12 col-lg-9 col-xs-9">

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { connect }          from 'react-redux'
-import { Link }             from 'react-router'
 import * as actions         from '../actions/Planet'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
 import SatelliteTable       from '../components/SatelliteTable'
+import PlanetShow           from '../components/PlanetShow'
 
 class Planet extends Component {
 	
@@ -26,37 +26,7 @@ class Planet extends Component {
 
 		return (
 			<div>
-				<h2>Planet</h2>
-				<table className="table">
-					<tbody>
-						<tr>
-							<th>Name</th>
-							<td>{planet.name}</td>
-						</tr>
-						<tr>
-							<th>Galaxy</th>
-							<td>
-								<Link to={`galaxy/${planet.galaxy_id}`}>{planet.galaxy_name}</Link>
-							</td>
-						</tr>
-						<tr>
-							<th>Radius</th>
-							<td>{planet.radius}</td>
-						</tr>
-						<tr>
-							<th>Core temperature</th>
-							<td>{planet.core_temperature}</td>
-						</tr>
-						<tr>
-							<th>Atmosphere</th>
-							<td>{planet.atmosphere ? 'Yes' : 'No'}</td>
-						</tr>
-						<tr>
-							<th>Life</th>
-							<td>{planet.life ? 'Yes' : 'No'}</td>
-						</tr>
-					</tbody>
-				</table>
+				<PlanetShow planet={planet} />
 				<h5>Satellites</h5>
 				<SatelliteTable satellites={satellites} />
 			</div>

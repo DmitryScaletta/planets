@@ -28,6 +28,11 @@ import {
 	FETCH_SATELLITE_SUCCESS, 
 	FETCH_SATELLITE_FAILURE,
 } from '../actions/Satellite'
+import { 
+	FETCH_CUSTOM_QUERY_REQUEST, 
+	FETCH_CUSTOM_QUERY_SUCCESS, 
+	FETCH_CUSTOM_QUERY_FAILURE,
+} from '../actions/CustomQuery'
 import initialItate from '../store/store'
 
 export default function(state = initialItate.common, action) {
@@ -39,6 +44,7 @@ export default function(state = initialItate.common, action) {
 		case FETCH_GALAXY_REQUEST:
 		case FETCH_PLANET_REQUEST:
 		case FETCH_SATELLITE_REQUEST:
+		case FETCH_CUSTOM_QUERY_REQUEST:
 			return {
 				...state,
 				error: '',
@@ -50,6 +56,7 @@ export default function(state = initialItate.common, action) {
 		case FETCH_GALAXY_SUCCESS:
 		case FETCH_PLANET_SUCCESS:
 		case FETCH_SATELLITE_SUCCESS:
+		case FETCH_CUSTOM_QUERY_SUCCESS:
 			return {
 				...state,
 				fetching: false,
@@ -60,6 +67,7 @@ export default function(state = initialItate.common, action) {
 		case FETCH_GALAXY_FAILURE:
 		case FETCH_PLANET_FAILURE:
 		case FETCH_SATELLITE_FAILURE:
+		case FETCH_CUSTOM_QUERY_FAILURE:
 			return {
 				...state,
 				error: action.error,

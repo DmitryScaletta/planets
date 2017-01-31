@@ -7,14 +7,15 @@ const initialState = {
 	planets:    [],
 	satellites: [],
 	galaxy: {
-		galaxy: {},
+		galaxy:  {},
 		planets: []
 	},
 	planet: {
-		planet: {},
+		planet:     {},
 		satellites: [],
 	},
-	satellite: {},
+	satellite:   {},
+	customQuery: [],
 }
 
 export default initialState

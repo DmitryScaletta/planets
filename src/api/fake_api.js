@@ -196,7 +196,10 @@ function addPlanetsSatellites(planets) {
 		planet.satellites = []
 		for (const satellite of satellites) {
 			if (satellite.planet_id === planet.id) {
-				planet.satellites.push(satellite)
+				planet.satellites.push({
+					...satellite,
+					planet_name: planet.name,
+				})
 			}
 		}
 		return planet
@@ -350,15 +353,18 @@ export function getSatellite(satelliteId) {
 }
 
 // Вывести информацию обо всех планетах, на которых присутствует жизнь, и их спутниках в заданной галактике
-export function getPlanetsWithLifeByGalaxy(galaxyId) {
+export function getPlanetsWithLifeByGalaxy(galaxyId, limit = 10) {
 	return new Promise((resolve, reject) => { setTimeout(() => {
 		let   planetsWithLife = []
 		const _galaxyId       = Number(galaxyId)
 		const galaxyName      = getGalaxyNameById(_galaxyId)
 
+		let count = 1
 		for (const planet of planets) {
+			if (count > limit) break
 			if (planet.galaxy_id !== _galaxyId || planet.life !== 1) continue
-			planetsWithLife.push({ ...planet, galaxy_id: _galaxyId, galaxy_name: galaxyName })
+			planetsWithLife.push({ ...planet, galaxy_name: galaxyName })
+			++count
 		}
 
 		resolve(addPlanetsSatellites(planetsWithLife))
@@ -366,12 +372,13 @@ export function getPlanetsWithLifeByGalaxy(galaxyId) {
 }
 
 // Вывести информацию о планетах и их спутниках, имеющих наименьший радиус и наибольшее количество спутников
-export function getPlanetsWithMinRadiusAndMaxSatellitesCount() {
+export function getPlanetsWithMinRadiusAndMaxSatellitesCount(limit = 10) {
 	return new Promise((resolve, reject) => { setTimeout(() => {
-		const newPlanets = planets.map((planet) => {
-			planet.satellites_count = getSatellitesCount(planet.id)
-			return planet
-		})
+		const newPlanets = planets.map((planet) => ({ 
+			...planet,
+			galaxy_name:      getGalaxyNameById (planet.galaxy_id),
+			satellites_count: getSatellitesCount(planet.id),
+		}))
 
 		const compare = (a, b) => {
 			if (a.radius           < b.radius)           return -1
@@ -381,18 +388,19 @@ export function getPlanetsWithMinRadiusAndMaxSatellitesCount() {
 			return 0
 		}
 
-		resolve(addPlanetsSatellites(newPlanets.sort(compare)))
+		resolve(addPlanetsSatellites(newPlanets.sort(compare).slice(0, limit)))
 	}, TIMEOUT)	})
 }
 
 // Вывести информацию о планете, галактике, в которой она находится, и ее спутниках, имеющей максимальное количество спутников, но с наименьшим общим объемом этих спутников
-export function getPlanetWithMaxSatellitesAndMinSatellitesVolume() {
+export function getPlanetWithMaxSatellitesAndMinSatellitesVolume(limit = 10) {
 	return new Promise((resolve, reject) => { setTimeout(() => {
-		const newPlanets = planets.map((planet) => {
-			planet.satellites_count  = getSatellitesCount (planet.id)
-			planet.satellites_volume = getSatellitesVolume(planet.id)
-			return planet
-		})
+		const newPlanets = planets.map((planet) => ({
+			...planet,
+			galaxy_name:       getGalaxyNameById  (planet.galaxy_id),
+			satellites_count:  getSatellitesCount (planet.id),
+			satellites_volume: getSatellitesVolume(planet.id),
+		}))
 
 		const compare = (a, b) => {
 			if (a.satellites_count  > b.satellites_count)  return -1
@@ -402,12 +410,12 @@ export function getPlanetWithMaxSatellitesAndMinSatellitesVolume() {
 			return 0
 		}
 
-		resolve(addPlanetsSatellites(newPlanets.sort(compare)))
+		resolve(addPlanetsSatellites(newPlanets.sort(compare).slice(0, limit)))
 	}, TIMEOUT)	})
 }
 
 // Найти галактику, сумма ядерных температур планет которой наибольшая
-export function getGalaxyWithMaxSumOfCoreTemperatures() {
+export function getGalaxyWithMaxSumOfCoreTemperatures(limit = 10) {
 
 	function getSumOfCoreTemperatures(galaxyId) {
 		let sum = 0
@@ -418,10 +426,11 @@ export function getGalaxyWithMaxSumOfCoreTemperatures() {
 	}
 
 	return new Promise((resolve, reject) => { setTimeout(() => {
-		const newGalaxies = galaxies.map((galaxy) => {
-			galaxy.sum_of_core_temperatures = getSumOfCoreTemperatures(galaxy.id)
-			return galaxy
-		})
+		const newGalaxies = galaxies.map((galaxy) => ({
+			...galaxy,
+			sum_of_core_temperatures: getSumOfCoreTemperatures(galaxy.id),
+			planets_count:            getPlanetsCount         (galaxy.id),
+		}))
 
 		const compare = (a, b) => {
 			if (a.sum_of_core_temperatures > b.sum_of_core_temperatures) return -1
@@ -429,6 +438,6 @@ export function getGalaxyWithMaxSumOfCoreTemperatures() {
 			return 0
 		}
 
-		resolve(newGalaxies.sort(compare))
+		resolve(newGalaxies.sort(compare).slice(0, limit))
 	}, TIMEOUT)	})
 }

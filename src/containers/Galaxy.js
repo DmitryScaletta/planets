@@ -4,6 +4,7 @@ import * as actions         from '../actions/Galaxy'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
 import PlanetTable          from '../components/PlanetTable'
+import GalaxyShow           from '../components/GalaxyShow'
 
 class Galaxy extends Component {
 	
@@ -25,19 +26,7 @@ class Galaxy extends Component {
 
 		return (
 			<div>
-				<h2>Galaxy</h2>
-				<table className="table">
-					<tbody>
-						<tr>
-							<th>Name</th>
-							<td>{galaxy.name}</td>
-						</tr>
-						<tr>
-							<th>Planets count</th>
-							<td>{galaxy.planets_count}</td>
-						</tr>
-					</tbody>
-				</table>
+				<GalaxyShow galaxy={galaxy} />
 				<h5>Planets</h5>
 				<PlanetTable planets={planets} />
 			</div>
