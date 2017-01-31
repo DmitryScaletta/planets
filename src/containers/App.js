@@ -5,19 +5,11 @@ import configureStore       from '../store/configureStore'
 import Home                 from '../components/Home'
 import Main                 from './Main'
 import PlanetList           from './PlanetList'
-import Planet               from '../components/Planet'
-import Galaxy               from '../components/Galaxy'
+import Planet               from './Planet'
+import Galaxy               from './Galaxy'
 import GalaxyList           from './GalaxyList'
-import Satellite            from '../components/Satellite'
+import Satellite            from './Satellite'
 import SatelliteList        from './SatelliteList'
-
-// console.log(api.getPlanetsWithLifeByGalaxy(12))
-// console.table(api.getPlanetsWithMinRadiusAndMaxSatellitesCount())
-// console.table(api.getPlanetWithMaxSatellitesAndMinSatellitesVolume())
-// console.table(api.getGalaxyWithMaxSumOfCoreTemperatures())
-// console.table(api.getPlanets())
-// console.table(api.getGalaxies())
-// console.table(api.getSatellites())
 
 const store = configureStore()
 

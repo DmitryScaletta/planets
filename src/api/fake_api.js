@@ -258,25 +258,43 @@ export function getGalaxies() {
 	}, TIMEOUT)	})
 }
 
-export function getPlanets() {
+export function getPlanets(galaxyId = null) {
+	
+	function addGalaxiesNames(planets) {
+		return planets.map((planet) => ({ ...planet, galaxy_name: getGalaxyNameById(planet.galaxy_id) }))
+	}
+	
 	return new Promise((resolve, reject) => { setTimeout(() => {
-		resolve(
-			planets.map((planet) => {
-				planet.galaxy_name = getGalaxyNameById(planet.galaxy_id)
-				return planet
-			})
-		)
+		if (galaxyId === null) {
+			resolve(addGalaxiesNames(planets))
+		} else {
+			const _galaxyId = Number(galaxyId)
+			if (isNaN(_galaxyId)) {
+				reject('galaxyId is not a number')
+				return
+			}
+			resolve(addGalaxiesNames(planets.filter((planet) => planet.galaxy_id === _galaxyId)))
+		}
 	}, TIMEOUT)	})
 }
 
-export function getSatellites() {
+export function getSatellites(planetId = null) {
+
+	function addPlanetsNames(satellites) {
+		return satellites.map((satellite) => ({ ...satellite, planet_name: getPlanetNameById(satellite.planet_id) }))
+	}
+
 	return new Promise((resolve, reject) => { setTimeout(() => {
-		resolve(
-			satellites.map((satellite) => {
-				satellite.planet_name = getPlanetNameById(satellite.planet_id)
-				return satellite
-			})
-		)
+		if (planetId === null) {
+			resolve(addPlanetsNames(satellites))
+		} else {
+			const _planetId = Number(planetId)
+			if (isNaN(_planetId)) {
+				reject('planetId is not a number')
+				return
+			}
+			resolve(addPlanetsNames(satellites.filter((satellite) => satellite.planet_id === _planetId)))
+		}
 	}, TIMEOUT)	})
 }
 
@@ -289,7 +307,7 @@ export function getGalaxy(galaxyId) {
 		}
 		for (const galaxy of galaxies) {
 			if (galaxy.id === _galaxyId) {
-				resolve(galaxy)
+				resolve({ ...galaxy, planets_count: getPlanetsCount(galaxy.id) })
 				return
 			}
 		}

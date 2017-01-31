@@ -4,7 +4,10 @@ const initialState = {
 		error:    '',
 	},
 	galaxies:   [],
-	galaxy:     {},
+	galaxy:     {
+		galaxy:  {},
+		planets: []
+	},
 	planets:    [],
 	planet:     {},
 	satellites: [],

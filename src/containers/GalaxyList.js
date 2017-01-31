@@ -2,15 +2,22 @@ import React, { Component } from 'react'
 import { connect }          from 'react-redux'
 import { Link }             from 'react-router'
 import * as actions         from '../actions/GalaxyList'
+import Loading              from '../components/Loading'
+import ErrorMessage         from '../components/ErrorMessage'
 
 class GalaxyList extends Component {
 	
 	componentDidMount() {
-		this.props.fetchGalaxies()
+		const { fetchGalaxies, galaxies } = this.props
+		if (!galaxies.length) fetchGalaxies()
 	}
 
 	render() {
-		const { galaxies } = this.props
+		const { galaxies, fetching, error } = this.props
+
+		if (fetching) return <Loading />
+		if (error)    return <ErrorMessage message={error} />
+
 		return (
 			<div>
 				<h2>Galaxies</h2>
