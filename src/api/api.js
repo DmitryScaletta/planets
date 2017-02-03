@@ -1,3 +1,23 @@
+import axios from 'axios'
+
+export function getGalaxies() {
+}
+
+export function getPlanets(galaxyId = null) {
+}
+
+export function getSatellites(planetId = null) {
+}
+
+export function getGalaxy(galaxyId) {
+}
+
+export function getPlanet(planetId) {
+}
+
+export function getSatellite(satelliteId) {
+}
+
 // Вывести информацию обо всех планетах, на которых присутствует жизнь, и их спутниках в заданной галактике
 export function getPlanetsWithLifeByGalaxy(_galaxyId) {
 	const galaxyId = Number(_galaxyId)
