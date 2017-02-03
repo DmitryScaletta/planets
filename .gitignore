@@ -52,4 +52,4 @@ jspm_packages
 # dotenv environment variables file
 .env
 
-dist/bundle.js
+dist/js/bundle.js

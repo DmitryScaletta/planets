@@ -33,7 +33,7 @@ const productionPlugins = [
 console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
 
 module.exports = createConfig([
-	setOutput('./dist/bundle.js'),
+	setOutput('./dist/js/bundle.js'),
 	babel(),
 	// addPlugins(basePlugins),
 	defineConstants({
