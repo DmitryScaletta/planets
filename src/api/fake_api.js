@@ -189,74 +189,47 @@ const galaxies = [
 	{ id: 17, name: 'Whirlpool Galaxy' },
 ]
 
-const TIMEOUT = 500
+const TIMEOUT = 400
 
 function addPlanetsSatellites(planets) {
-	return planets.map((planet) => {
-		planet.satellites = []
-		for (const satellite of satellites) {
-			if (satellite.planet_id === planet.id) {
-				planet.satellites.push({
-					...satellite,
-					planet_name: planet.name,
-				})
-			}
-		}
-		return planet
-	})
+	return planets.map((planet) => ({
+		...planet,
+		satellites: satellites
+			.filter((satellite) => satellite.planet_id === planet.id)
+			.map((satellite) => ({ ...satellite, planet_name: planet.name }))
+	}))	
 }
 
 function getGalaxyNameById(galaxyId) {
-	for (const galaxy of galaxies) {
-		if (galaxy.id === galaxyId) {
-			return galaxy.name
-		}
-	}
-	return ''
+	const galaxy = galaxies.find((galaxy) => galaxy.id === galaxyId)
+	return (galaxy === undefined) ? '' : galaxy.name
 }
 
 function getPlanetNameById(planetId) {
-	for (const planet of planets) {
-		if (planet.id === planetId) {
-			return planet.name
-		}
-	}
-	return ''
+	const planet = planets.find((planet) => planet.id === planetId)
+	return (planet === undefined) ? '' : planet.name
 }
 
 function getSatellitesCount(planetId) {
-	let count = 0
-	satellites.forEach((satellite) => {
-		if (satellite.planet_id === planetId) ++count
-	})
-	return count
+	return satellites.reduce((count, satellite) => ((satellite.planet_id === planetId) ? count + 1 : count), 0)
 }
 
 function getPlanetsCount(galaxyId) {
-	let count = 0
-	planets.forEach((planet) => {
-		if (planet.galaxy_id === galaxyId) ++count
-	})
-	return count
+	return planets.reduce((count, planet) => ((planet.galaxy_id === galaxyId) ? count + 1 : count), 0)
 }
 
 function getSatellitesVolume(planetId) {
-	let volume = 0
-	satellites.forEach((satellite) => {
-		if (satellite.planet_id === planetId) {
-			volume += 3/4 * Math.PI * Math.pow(satellite.radius, 3)
-		}
-	})
-	return volume
+	const volume = (radius) => (3/4 * Math.PI * Math.pow(radius, 3))
+	return satellites.reduce((vol, satellite) => ((satellite.planet_id === planetId) ? vol + volume(satellite.radius) : vol), 0)
 }
 
 export function getGalaxies() {
 	return new Promise((resolve, reject) => { setTimeout(() => {
 		resolve(
-			galaxies.map((galaxy) => {
-				galaxy.planets_count = getPlanetsCount(galaxy.id)
-				return galaxy
-			})
+			galaxies.map((galaxy) => ({
+				...galaxy,
+				planets_count: getPlanetsCount(galaxy.id)
+			}))
 		) 
 	}, TIMEOUT)	})
 }
@@ -308,13 +281,12 @@ export function getGalaxy(galaxyId) {
 			reject('galaxyId is not a number')
 			return
 		}
-		for (const galaxy of galaxies) {
-			if (galaxy.id === _galaxyId) {
-				resolve({ ...galaxy, planets_count: getPlanetsCount(galaxy.id) })
-				return
-			}
+		const galaxy = galaxies.find((galaxy) => galaxy.id === _galaxyId)
+		if (galaxy === undefined) {
+			reject(`Not found galaxy with id: ${galaxyId}`)
+		} else {
+			resolve({ ...galaxy, planets_count: getPlanetsCount(galaxy.id) })
 		}
-		reject('Not found galaxy with id: ' + galaxyId)
 	}, TIMEOUT)	})
 }
 
@@ -325,13 +297,12 @@ export function getPlanet(planetId) {
 			reject('planetId is not a number')
 			return
 		}
-		for (const planet of planets) {
-			if (planet.id === _planetId) {
-				resolve({ ...planet, galaxy_name: getGalaxyNameById(planet.galaxy_id) })
-				return
-			}
-		}
-		reject('Not found planet with id: ' + planetId)
+		const planet = planets.find((planet) => planet.id === _planetId)
+		if (planet === undefined) {
+			reject(`Not found planet with id: ${planetId}`)
+		} else {
+			resolve({ ...planet, galaxy_name: getGalaxyNameById(planet.galaxy_id) })
+		}		
 	}, TIMEOUT)	})
 }
 
@@ -342,13 +313,12 @@ export function getSatellite(satelliteId) {
 			reject('satelliteId is not a number')
 			return
 		}
-		for (const satellite of satellites) {
-			if (satellite.id === _satelliteId) {
-				resolve({ ...satellite, planet_name: getPlanetNameById(satellite.planet_id) })
-				return
-			}
+		const satellite = satellites.find((satellite) => satellite.id === _satelliteId)
+		if (satellite === undefined) {
+			reject(`Not found satellite with id: ${satelliteId}`)
+		} else {
+			resolve({ ...satellite, planet_name: getPlanetNameById(satellite.planet_id) })
 		}
-		reject('Not found satellite with id: ' + satelliteId)
 	}, TIMEOUT)	})
 }
 
@@ -357,13 +327,12 @@ export function getPlanetsWithLifeByGalaxy(galaxyId, limit = 10) {
 	return new Promise((resolve, reject) => { setTimeout(() => {
 		let   planetsWithLife = []
 		const _galaxyId       = Number(galaxyId)
-		const galaxyName      = getGalaxyNameById(_galaxyId)
 
 		let count = 1
 		for (const planet of planets) {
 			if (count > limit) break
 			if (planet.galaxy_id !== _galaxyId || planet.life !== 1) continue
-			planetsWithLife.push({ ...planet, galaxy_name: galaxyName })
+			planetsWithLife.push({ ...planet, galaxy_name: getGalaxyNameById(_galaxyId) })
 			++count
 		}
 
@@ -418,11 +387,7 @@ export function getPlanetWithMaxSatellitesAndMinSatellitesVolume(limit = 10) {
 export function getGalaxyWithMaxSumOfCoreTemperatures(limit = 10) {
 
 	function getSumOfCoreTemperatures(galaxyId) {
-		let sum = 0
-		planets.forEach((planet) => {
-			if (planet.galaxy_id === galaxyId) sum += planet.core_temperature
-		})
-		return sum
+		return planets.reduce((sum, planet) => ((planet.galaxy_id === galaxyId) ? sum + planet.core_temperature : sum), 0)
 	}
 
 	return new Promise((resolve, reject) => { setTimeout(() => {
