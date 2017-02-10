@@ -1,0 +1,215 @@
+{
+	"variables": [],
+	"info": {
+		"name": "planets",
+		"_postman_id": "7cdefca8-d247-f17c-40ed-ba18b1d16867",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"description": "",
+			"item": [
+				{
+					"name": "/planets/api/galaxy",
+					"request": {
+						"url": "http://localhost:8080/planets/api/galaxy",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/planet",
+					"request": {
+						"url": "http://localhost:8080/planets/api/planet",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/satellite",
+					"request": {
+						"url": "http://localhost:8080/planets/api/satellite",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET :id",
+			"description": "",
+			"item": [
+				{
+					"name": "/planets/api/galaxy/:id",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/planets/api/galaxy/:id",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"planets",
+								"api",
+								"galaxy",
+								":id"
+							],
+							"variable": [
+								{
+									"value": "1",
+									"id": "id"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/planet/:id",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/planets/api/planet/:id",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"planets",
+								"api",
+								"planet",
+								":id"
+							],
+							"variable": [
+								{
+									"value": "2",
+									"id": "id"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/satellite/:id",
+					"request": {
+						"url": {
+							"raw": "http://localhost:8080/planets/api/satellite/:id",
+							"protocol": "http",
+							"auth": {},
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"planets",
+								"api",
+								"satellite",
+								":id"
+							],
+							"variable": [
+								{
+									"value": "",
+									"id": "id"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"description": "",
+			"item": [
+				{
+					"name": "/planets/api/galaxy",
+					"request": {
+						"url": "http://localhost:8080/planets/api/galaxy",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test galaxy\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/planet",
+					"request": {
+						"url": "http://localhost:8080/planets/api/planet",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test planet\",\n\t\"galaxy_id\": 1,\n\t\"radius\": 666,\n\t\"core_temperature\": 1488,\n\t\"atmosphere\": 1,\n\t\"life\": 0\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/satellite",
+					"request": {
+						"url": "http://localhost:8080/planets/api/satellite",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test satellite\",\n\t\"planet_id\": 1,\n\t\"radius\": 228,\n\t\"distance\": 123456\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
