@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,7 +42,6 @@ public class Api extends HttpServlet
 			// too many parameters
 			response.setStatus(400);
 			return;
-
 		}
 		
 		if (params.length == 3)
@@ -147,15 +145,15 @@ public class Api extends HttpServlet
 			if (id == null)
 			{
 				// api/:table
-				ResultSet galaxies = DatabaseSelect.run(sql, queryParams);
-				json = ResultSetToJSON.toArray(galaxies);
+				ResultSet result = DatabaseSelect.run(sql, queryParams);
+				json = ResultSetToJSON.toArray(result);
 			}
 			else
 			{
 				// api/:table/:id
 				queryParams.add(id);
-				ResultSet galaxy = DatabaseSelect.run(sql, queryParams);
-				json = ResultSetToJSON.toObject(galaxy);
+				ResultSet result = DatabaseSelect.run(sql, queryParams);
+				json = ResultSetToJSON.toObject(result);
 			}
 		}
 		catch (SQLException e) 
