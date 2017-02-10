@@ -42,7 +42,7 @@ module.exports = createConfig([
 	env('development', [
 		entryPoint('./src/index.dev.js'),
 		() => ({ devServer: {
-			contentBase: ['dist']
+			contentBase: ['server/src/main/webapp/']
 		}}),
 		devServer(),
 		/*devServer.proxy({
