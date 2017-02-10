@@ -34,9 +34,31 @@
 					"response": []
 				},
 				{
+					"name": "/planets/api/planet?galaxy_id=",
+					"request": {
+						"url": "http://localhost:8080/planets/api/planet?galaxy_id=4",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
 					"name": "/planets/api/satellite",
 					"request": {
 						"url": "http://localhost:8080/planets/api/satellite",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/planets/api/satellite?planet_id=",
+					"request": {
+						"url": "http://localhost:8080/planets/api/satellite?planet_id=3",
 						"method": "GET",
 						"header": [],
 						"body": {},
@@ -131,7 +153,7 @@
 							],
 							"variable": [
 								{
-									"value": "",
+									"value": "5",
 									"id": "id"
 								}
 							]
