@@ -11,7 +11,7 @@ public class DatabaseSelect
 	//throws SQLException, ClassNotFoundException
 	public static ResultSet run(String sql) throws SQLException 
 	{
-		Connection db = DatabaseConnect.connect("D:/WINDOWS/Users/DmitryScaletta/Desktop/planets.sqlite3");
+		Connection db = Database.connect();
 
 		if (db == null) { return null; }
 
@@ -23,7 +23,7 @@ public class DatabaseSelect
 	
 	public static ResultSet run(String sql, Object[] params) throws SQLException 
 	{
-		Connection db = DatabaseConnect.connect("planets.sqlite3");
+		Connection db = Database.connect();
 
 		if (db == null) { return null; }
 
@@ -42,7 +42,6 @@ public class DatabaseSelect
 		
 		return res;
 	}
-
 
 }
 

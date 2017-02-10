@@ -27,7 +27,7 @@ public class Galaxy extends HttpServlet
 		}
 		
 		response.setContentType("application/json");
-		response.getWriter().append(json);
+		response.getWriter().append(json);//.append(getServletContext().getRealPath("/"))
 	}
 
 }
