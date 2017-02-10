@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.sqlite.jdbc4.*;
+
 public class Database 
 {
 	public static String filename = "D:/planets.sqlite3";

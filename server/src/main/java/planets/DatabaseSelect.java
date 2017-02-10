@@ -4,24 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseSelect 
 {
-	//throws SQLException, ClassNotFoundException
-	public static ResultSet run(String sql) throws SQLException 
-	{
-		Connection db = Database.connect();
-
-		if (db == null) { return null; }
-
-		Statement stmt = db.createStatement();
-		ResultSet res  = stmt.executeQuery(sql);
-		
-		return res;
-	}
-	
-	public static ResultSet run(String sql, Object[] params) throws SQLException 
+	public static ResultSet run(String sql, ArrayList<Object> params) throws SQLException 
 	{
 		Connection db = Database.connect();
 
@@ -42,7 +29,5 @@ public class DatabaseSelect
 		
 		return res;
 	}
-
+	
 }
-
-
