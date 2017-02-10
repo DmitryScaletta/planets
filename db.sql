@@ -1,111 +1,3 @@
--- На первом занятии необходимо выполнить следующие действия:
--- * Организацию соединения с базой данных вынести в отдельный класс, метод которого возвращает соединение.
--- * Создать БД (MySQL). Привести таблицы к одной из нормированных форм.
--- * Создать класс для выполнения запросов на извлечение информации из БД с использованием компилированных запросов (PreparedStatement).
--- * Создать класс на добавление информации.
--- * Создать класс, реализующий выбор задания и вывод на консоль результатов.
--- * Наполнить таблицы записями. В каждой таблице должно быть не менее 5 записей.
--- На втором занятии необходимо выполнить следующие действия:
--- * Для запросов, созданных на первом занятии создать HTML-документ с полями для формирования запросов.
--- * Результаты выполнения запроса передать клиенту в виде HTML-документа (можно использовать или сервлет, или JSP-страницу с тэгами <% %> или тэги JSTL).
-
-
-
--- 10.  Планеты. В БД хранится информация о планетах, их спутниках и галактиках.
--- Для планет необходимо хранить:
--- – название;
--- – радиус;
--- – температуру ядра;
--- – наличие атмосферы;
--- – наличие жизни;
--- – спутники.
--- Для спутников необходимо хранить:
--- – название;
--- – радиус;
--- – расстояние до планеты.
--- Для галактик необходимо хранить:
--- – название;
--- – планеты.
-
-
--- вспомагательный запрос - получение спутников для планет
-SELECT 
-    s.name,
-    s.planet_id,
-    p.name AS planet_name,
-    s.name,
-    s.radius,
-    s.distance
-FROM Satellite AS s
-INNER JOIN Planet AS p ON s.planet_id=p.id
-WHERE p.id IN ()
-
-
--- * Вывести информацию обо всех планетах, на которых присутствует жизнь, и их спутниках в заданной галактике.
-SELECT
-    p.id,
-    p.name,
-    p.galaxy_id,
-    g.name AS galaxy_name,
-    p.radius,
-    p.core_temperature,
-    p.atmosphere,
-    p.life
-FROM Planet AS p
-INNER JOIN Galaxy AS g ON p.galaxy_id=g.id
-WHERE g.id=? AND p.life=1
-
-
--- * Вывести информацию о планетах и их спутниках, имеющих наименьший радиус и наибольшее количество спутников.
-SELECT
-    p.id,
-    p.name,
-    p.galaxy_id,
-    g.name AS galaxy_name,
-    p.radius,
-    p.core_temperature,
-    p.atmosphere,
-    p.life,
-    COUNT(p.id) AS satellites_count
-FROM Planet AS p
-INNER JOIN Galaxy    AS g ON p.galaxy_id=g.id
-INNER JOIN Satellite AS s ON s.planet_id=p.id
-GROUP BY p.id
-ORDER BY p.radius ASC, satellites_count DESC
-
-
--- * Вывести информацию о планете, галактике, в которой она находится, и ее спутниках, имеющей максимальное количество спутников, но с наименьшим общим объемом этих спутников.
-SELECT
-    p.id,
-    p.name,
-    g.id   AS galaxy_id,
-    g.name AS galaxy_name,
-    p.radius,
-    p.core_temperature,
-    p.atmosphere,
-    p.life,
-    COUNT(p.id) AS satellites_count,
-    SUM(2.356194 * s.radius * s.radius * s.radius) AS satellites_volume
-FROM Planet AS p
-INNER JOIN Galaxy    AS g ON p.galaxy_id=g.id
-INNER JOIN Satellite AS s ON s.planet_id=p.id
-GROUP BY p.id
-ORDER BY satellites_count DESC, satellites_volume ASC
-
-
--- * Найти галактику, сумма ядерных температур планет которой наибольшая.
-SELECT
-    g.id,
-    g.name,
-    SUM(p.core_temperature) AS sum_of_core_temperatures
-FROM Galaxy AS g
-INNER JOIN Planet AS p ON g.id=p.galaxy_id
-GROUP BY g.id
-ORDER BY sum_of_core_temperatures DESC
-
-
-
-
 BEGIN TRANSACTION;
 
 -- планета
@@ -137,6 +29,83 @@ CREATE TABLE IF NOT EXISTS Galaxy
     name                TEXT        -- название
 );
 
+
+INSERT INTO Galaxy (id,name) VALUES 
+(1,  'Andromeda'),
+(2,  'Black Eye Galaxy'),
+(3,  'Bode''s Galaxy'),
+(4,  'Cartwheel Galaxy'),
+(5,  'Cigar Galaxy'),
+(6,  'Comet Galaxy'),
+(7,  'Cosmos Redshift 7'),
+(8,  'Hoag''s Object'),
+(9,  'Large Magellanic Cloud'),
+(10, 'Small Magellanic Cloud'),
+(11, 'Mayall''s Object'),
+(12, 'Milky Way'),
+(13, 'Pinwheel Galaxy'),
+(14, 'Sombrero Galaxy'),
+(15, 'Sunflower Galaxy'),
+(16, 'Tadpole Galaxy'),
+(17, 'Whirlpool Galaxy');
+
+INSERT INTO Planet (id,galaxy_id,name,radius,core_temperature,atmosphere,life) VALUES
+(1,  1,  'Proxima Centauri',   15950, 4938,  0, 0),
+(2,  1,  'Alpha Centauri',     19376, 5809,  0, 0),
+(3,  1,  'Luhman 16',          16645, 15895, 1, 0),
+(4,  2,  'Epsilon Eridani',    7312,  14125, 0, 0),
+(5,  2,  'Groombridge 34',     1143,  4637,  1, 0),
+(6,  2,  'Epsilon Indi',       15097, 7438,  1, 0),
+(7,  3,  'Tau Ceti',           19433, 1504,  1, 0),
+(8,  3,  'Kapteyn''s star',    13207, 17232, 0, 0),
+(9,  4,  'Wolf 1061',          17804, 4234,  1, 0),
+(10, 4,  'Gliese 687',         10509, 13990, 1, 0),
+(11, 4,  'Gliese 674',         12885, 14873, 0, 0),
+(12, 4,  'Gliese 876',         2315,  1439,  1, 0),
+(13, 5,  'Gliese 832',         14641, 8700,  0, 0),
+(14, 6,  'Gliese 682',         3276,  1198,  0, 0),
+(15, 6,  'Gliese 229',         13830, 13067, 0, 0),
+(16, 6,  '82 G. Eridani',      4068,  16967, 0, 0),
+(17, 6,  'Gliese 581',         19032, 14312, 1, 0),
+(18, 7,  'HD 219134',          5604,  10621, 1, 0),
+(19, 7,  'Gliese 667',         14143, 7236,  0, 0),
+(20, 8,  'HD 95872',           5682,  17681, 0, 0),
+(21, 8,  'Fomalhaut',          14909, 3199,  1, 0),
+(22, 8,  '61 Virginis',        2149,  13457, 0, 0),
+(23, 8,  'HD 192310',          13584, 6872,  1, 0),
+(24, 9,  'Gliese 433',         16133, 4641,  0, 0),
+(25, 9,  'Gliese 849',         16481, 10351, 0, 0),
+(26, 9,  'HD 102365',          4753,  10102, 1, 0),
+(27, 10, 'Gliese 176',         1234,  5990,  0, 0),
+(28, 10, 'Gliese 436',         6851,  7807,  1, 0),
+(29, 10, 'Gliese 649',         1756,  10263, 1, 0),
+(30, 10, 'Pollux',             8083,  18009, 1, 0),
+(31, 11, 'Gliese 86',          9120,  10540, 0, 0),
+(32, 11, 'HIP 57050',          17477, 902,   1, 0),
+(33, 12, '54 Piscium',         13678, 2514,  1, 0),
+(34, 12, 'HD 85512',           16272, 19611, 0, 0),
+(35, 12, 'GJ 180',             15304, 7581,  0, 0),
+(36, 13, 'Ross 458',           14270, 13245, 0, 0),
+(37, 13, 'Gliese 1132',        5423,  19357, 1, 0),
+(38, 13, 'Gliese 179',         13014, 7677,  1, 0),
+(39, 13, '55 Cancri',          11327, 17461, 1, 0),
+(40, 14, 'HD 69830',           6190,  7725,  0, 0),
+(41, 14, 'Innes'' star',       6395,  16573, 1, 0),
+(42, 14, 'VHS 1256-1257',      15645, 1685,  1, 0),
+(43, 15, 'HD 147513',          4745,  16969, 0, 0),
+(44, 15, 'HD 40307',           9286,  13187, 1, 0),
+(45, 15, 'GJ 1214',            4323,  3863,  0, 0),
+(46, 15, 'Upsilon Andromedae', 19212, 11832, 1, 0),
+(47, 15, 'Gamma Cephei',       1629,  12613, 0, 0),
+(48, 16, '47 Ursae Majoris',   13157, 5856,  0, 0),
+(49, 16, 'HIP 79431',          10695, 11448, 0, 0),
+(50, 16, 'Nu2 Lupi',           677,   10758, 0, 0),
+(51, 16, 'Gliese 163',         3451,  15563, 0, 0),
+(52, 17, 'HD 176051',          16581, 18665, 0, 0),
+(53, 17, 'Gliese 317',         9736,  17508, 0, 0),
+(54, 17, 'HD 38858',           17977, 12498, 0, 0),
+(55, 17, 'Mu Arae',            591,   19422, 0, 0),
+(56, 12, 'Earth',              3192,  5009,  1, 1);
 
 INSERT INTO Satellite (id,planet_id,name,radius,distance) VALUES
 (1,  1,  'Deimos',      14532, 345200),
@@ -249,81 +218,5 @@ INSERT INTO Satellite (id,planet_id,name,radius,distance) VALUES
 (108, 55, 'Bestla',     608,   65004 ),
 (109, 56, 'Moon',       1737,  384400);
 
-INSERT INTO Galaxy (id,name) VALUES 
-(1,  'Andromeda'),
-(2,  'Black Eye Galaxy'),
-(3,  'Bode''s Galaxy'),
-(4,  'Cartwheel Galaxy'),
-(5,  'Cigar Galaxy'),
-(6,  'Comet Galaxy'),
-(7,  'Cosmos Redshift 7'),
-(8,  'Hoag''s Object'),
-(9,  'Large Magellanic Cloud'),
-(10, 'Small Magellanic Cloud'),
-(11, 'Mayall''s Object'),
-(12, 'Milky Way'),
-(13, 'Pinwheel Galaxy'),
-(14, 'Sombrero Galaxy'),
-(15, 'Sunflower Galaxy'),
-(16, 'Tadpole Galaxy'),
-(17, 'Whirlpool Galaxy');
-
-INSERT INTO Planet (id,galaxy_id,name,radius,core_temperature,atmosphere,life) VALUES
-(1,  1,  'Proxima Centauri',   15950, 4938,  0, 0),
-(2,  1,  'Alpha Centauri',     19376, 5809,  0, 0),
-(3,  1,  'Luhman 16',          16645, 15895, 1, 0),
-(4,  2,  'Epsilon Eridani',    7312,  14125, 0, 0),
-(5,  2,  'Groombridge 34',     1143,  4637,  1, 0),
-(6,  2,  'Epsilon Indi',       15097, 7438,  1, 0),
-(7,  3,  'Tau Ceti',           19433, 1504,  1, 0),
-(8,  3,  'Kapteyn''s star',    13207, 17232, 0, 0),
-(9,  4,  'Wolf 1061',          17804, 4234,  1, 0),
-(10, 4,  'Gliese 687',         10509, 13990, 1, 0),
-(11, 4,  'Gliese 674',         12885, 14873, 0, 0),
-(12, 4,  'Gliese 876',         2315,  1439,  1, 0),
-(13, 5,  'Gliese 832',         14641, 8700,  0, 0),
-(14, 6,  'Gliese 682',         3276,  1198,  0, 0),
-(15, 6,  'Gliese 229',         13830, 13067, 0, 0),
-(16, 6,  '82 G. Eridani',      4068,  16967, 0, 0),
-(17, 6,  'Gliese 581',         19032, 14312, 1, 0),
-(18, 7,  'HD 219134',          5604,  10621, 1, 0),
-(19, 7,  'Gliese 667',         14143, 7236,  0, 0),
-(20, 8,  'HD 95872',           5682,  17681, 0, 0),
-(21, 8,  'Fomalhaut',          14909, 3199,  1, 0),
-(22, 8,  '61 Virginis',        2149,  13457, 0, 0),
-(23, 8,  'HD 192310',          13584, 6872,  1, 0),
-(24, 9,  'Gliese 433',         16133, 4641,  0, 0),
-(25, 9,  'Gliese 849',         16481, 10351, 0, 0),
-(26, 9,  'HD 102365',          4753,  10102, 1, 0),
-(27, 10, 'Gliese 176',         1234,  5990,  0, 0),
-(28, 10, 'Gliese 436',         6851,  7807,  1, 0),
-(29, 10, 'Gliese 649',         1756,  10263, 1, 0),
-(30, 10, 'Pollux',             8083,  18009, 1, 0),
-(31, 11, 'Gliese 86',          9120,  10540, 0, 0),
-(32, 11, 'HIP 57050',          17477, 902,   1, 0),
-(33, 12, '54 Piscium',         13678, 2514,  1, 0),
-(34, 12, 'HD 85512',           16272, 19611, 0, 0),
-(35, 12, 'GJ 180',             15304, 7581,  0, 0),
-(36, 13, 'Ross 458',           14270, 13245, 0, 0),
-(37, 13, 'Gliese 1132',        5423,  19357, 1, 0),
-(38, 13, 'Gliese 179',         13014, 7677,  1, 0),
-(39, 13, '55 Cancri',          11327, 17461, 1, 0),
-(40, 14, 'HD 69830',           6190,  7725,  0, 0),
-(41, 14, 'Innes'' star',       6395,  16573, 1, 0),
-(42, 14, 'VHS 1256-1257',      15645, 1685,  1, 0),
-(43, 15, 'HD 147513',          4745,  16969, 0, 0),
-(44, 15, 'HD 40307',           9286,  13187, 1, 0),
-(45, 15, 'GJ 1214',            4323,  3863,  0, 0),
-(46, 15, 'Upsilon Andromedae', 19212, 11832, 1, 0),
-(47, 15, 'Gamma Cephei',       1629,  12613, 0, 0),
-(48, 16, '47 Ursae Majoris',   13157, 5856,  0, 0),
-(49, 16, 'HIP 79431',          10695, 11448, 0, 0),
-(50, 16, 'Nu2 Lupi',           677,   10758, 0, 0),
-(51, 16, 'Gliese 163',         3451,  15563, 0, 0),
-(52, 17, 'HD 176051',          16581, 18665, 0, 0),
-(53, 17, 'Gliese 317',         9736,  17508, 0, 0),
-(54, 17, 'HD 38858',           17977, 12498, 0, 0),
-(55, 17, 'Mu Arae',            591,   19422, 0, 0),
-(56, 12, 'Earth',              3192,  5009,  1, 1);
 
 END TRANSACTION;
