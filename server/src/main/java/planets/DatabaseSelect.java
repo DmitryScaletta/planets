@@ -15,15 +15,7 @@ public class DatabaseSelect
 		if (db == null) { return null; }
 
 		PreparedStatement stmt = db.prepareStatement(sql);
-
-		int i = 0;
-		for (Object param : params) 
-		{
-			++i;
-			if (param instanceof Double)  { stmt.setDouble(i, (double) param); } else
-			if (param instanceof Integer) { stmt.setInt   (i, (int)    param); } else
-			if (param instanceof String)  { stmt.setString(i, (String) param); }
-		}
+		Database.bindParams(stmt, params);
 
 		ResultSet res = stmt.executeQuery();
 		
