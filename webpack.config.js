@@ -42,12 +42,13 @@ module.exports = createConfig([
 	env('development', [
 		entryPoint('./src/index.dev.js'),
 		() => ({ devServer: {
-			contentBase: ['server/src/main/webapp/']
+			contentBase: ['server/src/main/webapp/'],
+			port: 3001
 		}}),
 		devServer(),
-		/*devServer.proxy({
-			'/api/*': { target: 'http://localhost:8080' }
-		}),*/
+		devServer.proxy({
+			'/api/*': { target: 'http://localhost:8080/planets' }
+		}),
 		performance({
 			// Increase performance budget thresholds for development mode
 			maxAssetSize: 1500000,
