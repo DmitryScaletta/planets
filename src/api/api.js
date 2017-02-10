@@ -74,22 +74,45 @@ export function getSatellite(satelliteId) {
 }
 
 // Вывести информацию обо всех планетах, на которых присутствует жизнь, и их спутниках в заданной галактике
-export function getPlanetsWithLifeByGalaxy(_galaxyId) {
-	const galaxyId = Number(_galaxyId)
-	return Promise.resolve([])
+export function getPlanetsWithLifeByGalaxy(galaxyId, limit = 10) {
+	return new Promise((resolve, reject) => {
+		axios.get(`api/custom/planets-with-life?galaxy_id=${galaxyId}&limit=${limit}`)
+		.then(
+			(result) => resolve(result.data),
+			(error)  => reject(getAxiosError(error))
+		)
+	})
 }
 
 // Вывести информацию о планетах и их спутниках, имеющих наименьший радиус и наибольшее количество спутников
-export function getPlanetsWithMinRadiusAndMaxSatellitesCount() {
-	return Promise.resolve([])
+export function getPlanetsWithMinRadiusAndMaxSatellitesCount(limit = 10) {
+	return new Promise((resolve, reject) => {
+		axios.get(`api/custom/planets-min-radius?limit=${limit}`)
+		.then(
+			(result) => resolve(result.data),
+			(error)  => reject(getAxiosError(error))
+		)
+	})
 }
 
 // Вывести информацию о планете, галактике, в которой она находится, и ее спутниках, имеющей максимальное количество спутников, но с наименьшим общим объемом этих спутников
-export function getPlanetWithMaxSatellitesAndMinSatellitesVolume() {
-	return Promise.resolve([])
+export function getPlanetWithMaxSatellitesAndMinSatellitesVolume(limit = 10) {
+	return new Promise((resolve, reject) => {
+		axios.get(`api/custom/planets-max-satellites?limit=${limit}`)
+		.then(
+			(result) => resolve(result.data),
+			(error)  => reject(getAxiosError(error))
+		)
+	})
 }
 
 // Найти галактику, сумма ядерных температур планет которой наибольшая
-export function getGalaxyWithMaxSumOfCoreTemperatures() {
-	return Promise.resolve([])
+export function getGalaxyWithMaxSumOfCoreTemperatures(limit = 10) {
+	return new Promise((resolve, reject) => {
+		axios.get(`api/custom/galaxies-max-core-temperatures?limit=${limit}`)
+		.then(
+			(result) => resolve(result.data),
+			(error)  => reject(getAxiosError(error))
+		)
+	})
 }
