@@ -3,6 +3,7 @@ import { connect }          from 'react-redux'
 import { Link }             from 'react-router'
 import * as actions         from '../actions/CustomQuery'
 import { fetchGalaxies }    from '../actions/GalaxyList'
+import { fetchSatellites}   from '../actions/SatelliteList'
 import Loading              from '../components/Loading'
 import ErrorMessage         from '../components/ErrorMessage'
 import SatelliteTable       from '../components/SatelliteTable'
@@ -37,23 +38,30 @@ class Galaxy extends Component {
 	fetchData() {
 		switch (this.props.params.queryName) {
 			case 'planets-with-life':
-				if (!this.props.galaxies.length) this.props.fetchGalaxies() 
+				if (!this.props.galaxies.length) this.props.fetchGalaxies()
 			case 'planets-with-min-radius-and-max-satelites-count': // eslint-disable-line
 			case 'planets-with-max-satelites-count-and-min-satellites-volume':
+				if (!this.props.satellites.length) {
+					this.props.fetchSatellites().then(() => {
+						this.props.fetchCustomQuery(this.props.params.queryName)
+					})
+					break
+				}
 			case 'galaxies-with-max-sum-of-core-temperatures':
 				this.props.fetchCustomQuery(this.props.params.queryName)
 				break
 		}
 	}
 
-	renderPlanets(data) {
+	renderPlanets(data, satellites) {
+		if (!data || !satellites) return null
 		return (
 			<div>
 				{ data.map((planet) => (
 				<div key={planet.id} style={{marginBottom: '50px'}}>
 					<PlanetShow planet={planet} />
 					<h5>Satellites</h5>
-					<SatelliteTable satellites={planet.satellites} />
+					<SatelliteTable satellites={satellites.filter((satellite) => satellite.planet_id === planet.id)} />
 				</div>
 				)) }
 			</div>
@@ -61,7 +69,7 @@ class Galaxy extends Component {
 	}
 
 	render() {
-		const { data, galaxies, params: { queryName }, fetching, error } = this.props
+		const { data, galaxies, satellites, params: { queryName }, fetching, error } = this.props
 
 		if (fetching) return <Loading />
 		if (error)    return <ErrorMessage message={error} />
@@ -79,12 +87,12 @@ class Galaxy extends Component {
 								)) }
 							</select>
 						</div>
-						{ (!data.length && this.state.galaxyId) ? <span>There is no life in this galaxy</span> : this.renderPlanets(data) }
+						{ (!data.length && this.state.galaxyId) ? <span>There is no life in this galaxy</span> : this.renderPlanets(data, satellites) }
 					</div>
 				)
 			case 'planets-with-min-radius-and-max-satelites-count':
 			case 'planets-with-max-satelites-count-and-min-satellites-volume':
-				return this.renderPlanets(data)
+				return this.renderPlanets(data, satellites)
 			case 'galaxies-with-max-sum-of-core-temperatures':
 				return (
 					<div>
@@ -121,8 +129,10 @@ class Galaxy extends Component {
 Galaxy.propTypes = {
 	fetchCustomQuery: React.PropTypes.func,
 	fetchGalaxies:    React.PropTypes.func,
+	fetchSatellites:  React.PropTypes.func,
 	data:             React.PropTypes.array,
 	galaxies:         React.PropTypes.array,
+	satellites:       React.PropTypes.array,
 	fetching:         React.PropTypes.bool,
 	error:            React.PropTypes.string,
 	params:           React.PropTypes.object,
@@ -130,14 +140,16 @@ Galaxy.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		data:     state.customQuery,
-		galaxies: state.galaxies,
-		fetching: state.common.fetching,
-		error:    state.common.error,
+		data:       state.customQuery,
+		galaxies:   state.galaxies,
+		satellites: state.satellites,
+		fetching:   state.common.fetching,
+		error:      state.common.error,
 	}
 }
 
 export default connect(mapStateToProps, {
 	...actions,
 	fetchGalaxies,
+	fetchSatellites,
 })(Galaxy)

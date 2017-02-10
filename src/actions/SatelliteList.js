@@ -8,7 +8,7 @@ export function fetchSatellites() {
 	return (dispatch) => {
 		dispatch({ type: FETCH_SATELLITES_REQUEST })
 
-		getSatellites().then(
+		return getSatellites().then(
 			(result) => dispatch({
 				type: FETCH_SATELLITES_SUCCESS,
 				items: result,

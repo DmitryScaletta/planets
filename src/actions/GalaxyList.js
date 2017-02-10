@@ -8,7 +8,7 @@ export function fetchGalaxies() {
 	return (dispatch) => {
 		dispatch({ type: FETCH_GALAXIES_REQUEST })
 
-		getGalaxies().then(
+		return getGalaxies().then(
 			(result) => dispatch({
 				type: FETCH_GALAXIES_SUCCESS,
 				items: result,

@@ -191,14 +191,6 @@ const galaxies = [
 
 const TIMEOUT = 400
 
-function addPlanetsSatellites(planets) {
-	return planets.map((planet) => ({
-		...planet,
-		satellites: satellites
-			.filter((satellite) => satellite.planet_id === planet.id)
-			.map((satellite) => ({ ...satellite, planet_name: planet.name }))
-	}))	
-}
 
 function getGalaxyNameById(galaxyId) {
 	const galaxy = galaxies.find((galaxy) => galaxy.id === galaxyId)
@@ -336,7 +328,7 @@ export function getPlanetsWithLifeByGalaxy(galaxyId, limit = 10) {
 			++count
 		}
 
-		resolve(addPlanetsSatellites(planetsWithLife))
+		resolve(planetsWithLife)
 	}, TIMEOUT)	})
 }
 
@@ -357,7 +349,7 @@ export function getPlanetsWithMinRadiusAndMaxSatellitesCount(limit = 10) {
 			return 0
 		}
 
-		resolve(addPlanetsSatellites(newPlanets.sort(compare).slice(0, limit)))
+		resolve(newPlanets.sort(compare).slice(0, limit))
 	}, TIMEOUT)	})
 }
 
@@ -379,7 +371,7 @@ export function getPlanetWithMaxSatellitesAndMinSatellitesVolume(limit = 10) {
 			return 0
 		}
 
-		resolve(addPlanetsSatellites(newPlanets.sort(compare).slice(0, limit)))
+		resolve(newPlanets.sort(compare).slice(0, limit))
 	}, TIMEOUT)	})
 }
 
