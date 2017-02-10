@@ -1,5 +1,12 @@
 BEGIN TRANSACTION;
 
+-- галактика
+CREATE TABLE IF NOT EXISTS Galaxy
+(
+    id                  INTEGER     PRIMARY KEY AUTOINCREMENT,
+    name                TEXT        -- название
+);
+
 -- планета
 CREATE TABLE IF NOT EXISTS Planet
 (
@@ -20,13 +27,6 @@ CREATE TABLE IF NOT EXISTS Satellite
     name                TEXT,       -- название
     radius              INTEGER,    -- радиус
     distance            INTEGER     -- расстояние до планеты
-);
-
--- галактика
-CREATE TABLE IF NOT EXISTS Galaxy
-(
-    id                  INTEGER     PRIMARY KEY AUTOINCREMENT,
-    name                TEXT        -- название
 );
 
 
