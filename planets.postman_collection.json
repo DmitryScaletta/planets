@@ -12,7 +12,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "/planets/api/galaxy",
+					"name": "/api/galaxy",
 					"request": {
 						"url": "http://localhost:8080/planets/api/galaxy",
 						"method": "GET",
@@ -23,7 +23,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/planet",
+					"name": "/api/planet",
 					"request": {
 						"url": "http://localhost:8080/planets/api/planet",
 						"method": "GET",
@@ -34,7 +34,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/planet?galaxy_id=",
+					"name": "/api/planet?galaxy_id=",
 					"request": {
 						"url": "http://localhost:8080/planets/api/planet?galaxy_id=4",
 						"method": "GET",
@@ -45,7 +45,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/satellite",
+					"name": "/api/satellite",
 					"request": {
 						"url": "http://localhost:8080/planets/api/satellite",
 						"method": "GET",
@@ -56,7 +56,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/satellite?planet_id=",
+					"name": "/api/satellite?planet_id=",
 					"request": {
 						"url": "http://localhost:8080/planets/api/satellite?planet_id=3",
 						"method": "GET",
@@ -73,7 +73,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "/planets/api/galaxy/:id",
+					"name": "/api/galaxy/:id",
 					"request": {
 						"url": {
 							"raw": "http://localhost:8080/planets/api/galaxy/:id",
@@ -104,7 +104,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/planet/:id",
+					"name": "/api/planet/:id",
 					"request": {
 						"url": {
 							"raw": "http://localhost:8080/planets/api/planet/:id",
@@ -135,7 +135,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/satellite/:id",
+					"name": "/api/satellite/:id",
 					"request": {
 						"url": {
 							"raw": "http://localhost:8080/planets/api/satellite/:id",
@@ -172,7 +172,7 @@
 			"description": "",
 			"item": [
 				{
-					"name": "/planets/api/galaxy",
+					"name": "/api/galaxy",
 					"request": {
 						"url": "http://localhost:8080/planets/api/galaxy",
 						"method": "POST",
@@ -192,7 +192,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/planet",
+					"name": "/api/planet",
 					"request": {
 						"url": "http://localhost:8080/planets/api/planet",
 						"method": "POST",
@@ -212,7 +212,7 @@
 					"response": []
 				},
 				{
-					"name": "/planets/api/satellite",
+					"name": "/api/satellite",
 					"request": {
 						"url": "http://localhost:8080/planets/api/satellite",
 						"method": "POST",
@@ -227,6 +227,56 @@
 							"mode": "raw",
 							"raw": "{\n\t\"name\": \"test satellite\",\n\t\"planet_id\": 1,\n\t\"radius\": 228,\n\t\"distance\": 123456\n}"
 						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "custom",
+			"description": "",
+			"item": [
+				{
+					"name": "planets-with-life",
+					"request": {
+						"url": "http://localhost:8080/planets/api/custom/planets-with-life?galaxy_id=12&limit=10",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "planets-min-radius",
+					"request": {
+						"url": "http://localhost:8080/planets/api/custom/planets-min-radius?limit=10",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "planets-max-satellites",
+					"request": {
+						"url": "http://localhost:8080/planets/api/custom/planets-max-satellites?limit=10",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "galaxies-max-core-temperatures",
+					"request": {
+						"url": "http://localhost:8080/planets/api/custom/galaxies-max-core-temperatures?limit=10",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
 					},
 					"response": []
